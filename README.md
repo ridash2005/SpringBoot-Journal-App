@@ -1,10 +1,12 @@
 # Journal App
 
-[![Version](https://img.shields.io/badge/version-1.0.0-brightgreen)](CHANGELOG.md)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Java](https://img.shields.io/badge/java-17-red.svg)]()
-[![Spring Boot](https://img.shields.io/badge/spring%20boot-2.7.16-green.svg)]()
-[![Status](https://img.shields.io/badge/status-production%20ready-brightgreen)](DEPLOYMENT.md)
+[![Version](https://img.shields.io/badge/VERSION-1.0.0-brightgreen?style=for-the-badge&logo=github)](CHANGELOG.md)
+[![License](https://img.shields.io/badge/LICENSE-MIT-blue?style=for-the-badge&logo=opensourceinitiative)](LICENSE)
+[![Java](https://img.shields.io/badge/JAVA-17-red?style=for-the-badge&logo=java)](https://www.java.com)
+[![Spring Boot](https://img.shields.io/badge/SPRING%20BOOT-2.7.16-green?style=for-the-badge&logo=springboot)](https://spring.io/projects/spring-boot)
+[![Status](https://img.shields.io/badge/STATUS-PRODUCTION%20READY-brightgreen?style=for-the-badge&logo=checkmarx)](DEPLOYMENT.md)
+[![Docker](https://img.shields.io/badge/DOCKER-SUPPORTED-blue?style=for-the-badge&logo=docker)](Dockerfile)
+[![Maven](https://img.shields.io/badge/BUILD-MAVEN-C71A36?style=for-the-badge&logo=apachemaven)](https://maven.apache.org)
 
 A secure, end-to-end encrypted (E2EE) journal application built with Spring Boot. This application provides a modern REST API for managing personal journal entries with sentiment analysis, weather integration, and advanced security features.
 

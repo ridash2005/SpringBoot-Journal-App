@@ -32,10 +32,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Health checks in Docker containers
   - Prometheus metrics support in production profile
   - Structured logging configuration
-- **Branding Update**: 
-  - Updated maintainer from "Engineering Digest" to "Rickarya Das"
-  - Updated all references and metadata
-
 ### Changed
 - Version: 0.0.1-SNAPSHOT → 1.0.0
 - Redis port: Externalized from hardcoded 15641 to configurable ${REDIS_PORT:6379}
