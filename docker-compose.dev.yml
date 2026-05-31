@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:7.0-alpine
+    container_name: journal-mongo-dev
+    environment:
+      MONGO_INITDB_DATABASE: journaldb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data_dev:/data/db
+    networks:
+      - journal-network-dev
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: journal-redis-dev
+    command: redis-server
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data_dev:/data
+    networks:
+      - journal-network-dev
+    restart: unless-stopped
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: journal-kafka-dev
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    ports:
+      - "9092:9092"
+    networks:
+      - journal-network-dev
+    restart: unless-stopped
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: journal-zookeeper-dev
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    ports:
+      - "2181:2181"
+    networks:
+      - journal-network-dev
+    restart: unless-stopped
+
+volumes:
+  mongo_data_dev:
+  redis_data_dev:
+
+networks:
+  journal-network-dev:
+    driver: bridge

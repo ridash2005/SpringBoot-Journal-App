@@ -1,0 +1,46 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Build
+target/
+build/
+*.jar
+*.war
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Documentation
+docs/
+README.md
+CONTRIBUTING.md
+LICENSE
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Environment
+.env*
+.env.*.local
+
+# Node (if frontend exists)
+node_modules/
+dist/
+npm-debug.log
+
+# OS
+.DS_Store
+Thumbs.db

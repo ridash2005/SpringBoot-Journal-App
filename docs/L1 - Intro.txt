@@ -1,0 +1,44 @@
+Spring Boot is a framework for building applications in the java programming language.
+Spring Boot makes it easy to create stand-aloe production grade Spring based applications that you can just run
+Makes it easy to make Spring applications.
+
+Features:
+Auto-configuration 
+Standalone Applications
+
+Earlier, manual config required to set up Spring Application Context
+@SptingBootApplication annotation in Main Class 
+Configure Beans only once then application context finds and gives it to you whenever required 
+\\ Beans are the objects inside IOC Container
+
+Maven Helps in build automationa dependecies handleing
+put libraries in .xml file
+
+Spring provides IOC container that externalizes the creation object (before we used to create object  Car obj = new Car() )
+Application context is a way to achieve IOC conatiner.
+
+Apply @SpringBootApplication on main class. It has 3 components:
+@Configuration - Bean
+@EnableAutoConfiguration
+@ComponentScan
+
+
+@RestController is @Component + something else --- it also makes an object but a special one. 
+
+@Component ---> annotation
+public class My Component{
+    //Class is automatically registered as Spring bean.
+}
+
+
+@Autowired - dependency (field) injection, using one class in another
+
+@Bean annotation used on functions instead of classes
+
+@GetMapping --- maps a particulat fuction to a endpoint 
+Example -- 
+
+GetMapping("/health-check")
+public String healthCheck(){
+    return "OK";
+}

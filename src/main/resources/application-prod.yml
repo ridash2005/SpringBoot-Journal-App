@@ -1,0 +1,58 @@
+# Production Profile Configuration
+# This configuration is activated when SPRING_PROFILES_ACTIVE=production
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate  # Never use create or create-drop in production
+  
+  # Production-specific datasource settings
+  data:
+    mongodb:
+      auto-index-creation: true
+      
+  # Cache configuration
+  cache:
+    type: redis
+    redis:
+      time-to-live: 3600000  # 1 hour
+      use-key-prefix: true
+
+# Logging configuration
+logging:
+  level:
+    root: WARN
+    net.rickarya.journalApp: INFO
+    org.springframework.web: WARN
+    org.springframework.security: WARN
+  file:
+    name: logs/journal-app.log
+    max-size: 10MB
+    max-history: 30
+    total-size-cap: 1GB
+
+# Actuator endpoints for monitoring (production)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      show-details: when-authorized
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# Server configuration
+server:
+  compression:
+    enabled: true
+    min-response-size: 1024
+  tomcat:
+    threads:
+      max: 200
+      min-spare: 10
+    max-connections: 10000
+    max-http-post-size: 2097152  # 2MB

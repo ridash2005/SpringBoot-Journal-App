@@ -1,0 +1,304 @@
+# Journal App
+
+[![Version](https://img.shields.io/badge/version-1.0.0-brightgreen)](CHANGELOG.md)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Java](https://img.shields.io/badge/java-17-red.svg)]()
+[![Spring Boot](https://img.shields.io/badge/spring%20boot-2.7.16-green.svg)]()
+[![Status](https://img.shields.io/badge/status-production%20ready-brightgreen)](DEPLOYMENT.md)
+
+A secure, end-to-end encrypted (E2EE) journal application built with Spring Boot. This application provides a modern REST API for managing personal journal entries with sentiment analysis, weather integration, and advanced security features.
+
+**Maintained by**: [Rickarya Das](https://github.com/ridash2005)
+
+## Features
+
+- **End-to-End Encryption (E2EE)**: Your journal entries are encrypted for maximum privacy
+- **User Authentication**: Secure authentication with JWT tokens and OAuth2 (Google)
+- **Sentiment Analysis**: Automatic sentiment detection for your journal entries
+- **Weather Integration**: Correlate entries with real-time weather data
+- **Caching**: Redis-powered caching for improved performance
+- **Email Notifications**: Scheduled email reminders and notifications
+- **Admin Dashboard**: Administrative controls for system management
+- **API Documentation**: Interactive Swagger/OpenAPI documentation
+- **Kafka Integration**: Event-driven architecture for processing
+- **MongoDB**: Flexible document storage for entries
+
+## Tech Stack
+
+- **Framework**: Spring Boot 2.7.16
+- **Language**: Java 17
+- **Database**: MongoDB
+- **Cache**: Redis
+- **Message Queue**: Apache Kafka
+- **Authentication**: JWT, OAuth2
+- **API Documentation**: Springdoc OpenAPI (Swagger UI)
+- **Build Tool**: Maven
+- **Testing**: JUnit 5, Mockito
+
+## Prerequisites
+
+Before running the application, ensure you have the following installed:
+
+- Java 17+
+- Maven 3.8+
+- Docker and Docker Compose (for containerized setup)
+- MongoDB (or use Docker)
+- Redis (or use Docker)
+- Kafka (or use Docker)
+
+## Installation & Setup
+
+### Using Docker Compose (Recommended)
+
+1. Clone the repository:
+```bash
+git clone https://github.com/ridash2005/SpringBoot-Journal-App.git
+cd journalApp
+```
+
+2. Copy the environment template:
+```bash
+cp .env.example .env
+```
+
+3. Update `.env` with your configuration:
+```env
+MONGODB_URI=mongodb://mongo:27017
+REDIS_HOST=redis
+REDIS_PASSWORD=your_redis_password
+KAFKA_SERVERS=kafka:9092
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+JAVA_EMAIL=your_email@gmail.com
+JAVA_EMAIL_PASSWORD=your_app_password
+WEATHER_API_KEY=your_weather_api_key
+SERVER_PORT=8080
+```
+
+4. Start the application:
+```bash
+docker-compose up -d
+```
+
+The application will be available at: `http://localhost:8080/journal`
+
+### Local Development Setup
+
+1. Clone the repository:
+```bash
+git clone https://github.com/ridash2005/SpringBoot-Journal-App.git
+cd journalApp
+```
+
+2. Copy the environment template:
+```bash
+cp .env.example .env
+```
+
+3. Update `.env` with your local configuration
+
+4. Start required services (using Docker):
+```bash
+docker-compose -f docker-compose.dev.yml up -d
+```
+
+5. Build the application:
+```bash
+mvn clean package -DskipTests
+```
+
+6. Run the application:
+```bash
+mvn spring-boot:run
+```
+
+## Configuration
+
+### Environment Variables
+
+All configuration is managed through environment variables. See `.env.example` for all available options.
+
+Key configurations:
+- `MONGODB_URI`: MongoDB connection string
+- `REDIS_HOST`: Redis server host
+- `KAFKA_SERVERS`: Kafka bootstrap servers
+- `GOOGLE_CLIENT_ID` & `GOOGLE_CLIENT_SECRET`: Google OAuth2 credentials
+- `JAVA_EMAIL` & `JAVA_EMAIL_PASSWORD`: Gmail credentials for sending emails
+- `WEATHER_API_KEY`: API key for weather service
+- `SERVER_PORT`: Application server port (default: 8080)
+
+## API Documentation
+
+Once the application is running, access the interactive API documentation at:
+
+```
+http://localhost:8080/journal/swagger-ui.html
+```
+
+Or view the OpenAPI specification at:
+
+```
+http://localhost:8080/journal/v3/api-docs
+```
+
+## Project Structure
+
+```
+src/
+├── main/
+│   ├── java/net/rickarya/journalApp/
+│   │   ├── controller/          # REST API Controllers
+│   │   ├── service/             # Business logic services
+│   │   ├── entity/              # JPA entities
+│   │   ├── repository/          # Data access layer
+│   │   ├── config/              # Spring configuration
+│   │   ├── filter/              # Security filters
+│   │   ├── dto/                 # Data transfer objects
+│   │   ├── utils/               # Utility classes
+│   │   ├── cache/               # Caching logic
+│   │   ├── scheduler/           # Scheduled tasks
+│   │   ├── constants/           # Application constants
+│   │   ├── enums/               # Enumeration types
+│   │   ├── model/               # Domain models
+│   │   └── api/response/        # API response wrappers
+│   └── resources/
+│       ├── application.yml      # Spring configuration
+│       └── logback.xml          # Logging configuration
+└── test/
+    └── java/                    # Unit and integration tests
+```
+
+## Building & Testing
+
+### Build the application:
+```bash
+mvn clean package
+```
+
+### Run tests:
+```bash
+mvn test
+```
+
+### Run specific test class:
+```bash
+mvn test -Dtest=UserServiceTest
+```
+
+### Generate code coverage report:
+```bash
+mvn clean test jacoco:report
+```
+
+## API Endpoints
+
+### Public Endpoints
+- `POST /journal/public/signup` - User registration
+- `POST /journal/public/login` - User login
+- `GET /journal/public/health` - Health check
+
+### User Endpoints (Authenticated)
+- `GET /journal/user/all` - Get all journal entries
+- `POST /journal/user/add` - Create new journal entry
+- `GET /journal/user/{id}` - Get journal entry by ID
+- `PUT /journal/user/{id}` - Update journal entry
+- `DELETE /journal/user/{id}` - Delete journal entry
+
+### Admin Endpoints (Admin role required)
+- `GET /journal/admin/all-users` - Get all users
+- `DELETE /journal/admin/user/{id}` - Delete user
+- `GET /journal/admin/stats` - System statistics
+
+For complete API documentation, see Swagger UI at `/journal/swagger-ui.html`
+
+## Security Considerations
+
+- **JWT Tokens**: All user requests require valid JWT tokens
+- **Password Encryption**: Passwords are hashed using BCrypt
+- **CORS**: Configured to allow trusted origins
+- **CSRF Protection**: Disabled for stateless API but ensure HTTPS in production
+- **Sensitive Data**: Never commit `.env` files or secrets to version control
+
+## Development Guidelines
+
+### Code Style
+- Follow Google Java Style Guide
+- Use meaningful variable and method names
+- Add JavaDoc comments for public APIs
+- Keep methods small and focused (max 30 lines)
+
+### Commit Messages
+- Use conventional commits: `feat:`, `fix:`, `docs:`, `style:`, `refactor:`, `test:`, `chore:`
+- Example: `feat: add sentiment analysis for journal entries`
+
+### Pull Requests
+- Ensure all tests pass before submitting PR
+- Update documentation if needed
+- Keep PRs focused on a single feature/fix
+
+## Troubleshooting
+
+### Port already in use
+If port 8080 is already in use, change it in `.env`:
+```env
+SERVER_PORT=8081
+```
+
+### MongoDB connection issues
+Verify MongoDB URI in `.env` and that MongoDB service is running:
+```bash
+docker-compose logs mongo
+```
+
+### Kafka connection issues
+Ensure Kafka and Zookeeper are running:
+```bash
+docker-compose logs kafka
+```
+
+### Test failures
+Run tests with verbose output:
+```bash
+mvn test -X
+```
+
+## Performance & Monitoring
+
+- **Request Logging**: All requests are logged in `logs/` directory
+- **Metrics**: Use Spring Boot Actuator endpoints for monitoring
+- **Caching**: Redis caching reduces database load
+- **Rate Limiting**: Configure in application.yml for production
+
+## Contributing
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+
+## License
+
+This project is licensed under the MIT License - see [LICENSE](LICENSE) file for details.
+
+## Support
+
+For issues and questions:
+- 📧 Email: rickaryadas@gmail.com
+- 🐛 Report bugs: [GitHub Issues](https://github.com/ridash2005/SpringBoot-Journal-App/issues)
+- 💡 Suggest features: [GitHub Discussions](https://github.com/ridash2005/SpringBoot-Journal-App/discussions)
+
+## Roadmap
+
+- [ ] Mobile application (iOS/Android)
+- [ ] Advanced analytics and insights
+- [ ] AI-powered writing suggestions
+- [ ] Multi-language support
+- [ ] Collaborative journal entries
+- [ ] Export to PDF/Word
+
+## Authors
+
+- **Rickarya Das** - [GitHub](https://github.com/ridash2005)
+
+## Acknowledgments
+
+- Spring Boot community
+- MongoDB and Redis documentation
+- OpenAPI/Swagger specification

@@ -1,0 +1,6 @@
+RestAPI - Representational State Transfer Application Programming Interface 
+Used ti access srvers
+cant access only useing url (server:port/endpoint) example: 172.17.18.19:8080/netflix/plans
+HTTP verb required, are of 4 types: GET, PUT, POST, DELETE
+
+Software: Postman helps in hitting RestAPIs
