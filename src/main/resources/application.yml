@@ -1,3 +1,7 @@
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /journal
 weather:
   api:
     key: ${WEATHER_API_KEY}
@@ -11,18 +15,13 @@ spring:
             client-secret: ${GOOGLE_CLIENT_SECRET}
   main:
     allow-circular-references: true
-  server:
-    port: ${SERVER_PORT}
-    servlet:
-      context-path: /journal
   redis:
-    data:
-      host: ${REDIS_HOST}
-      port: 15641
-      password: ${REDIS_PASSWORD}
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:}
   data:
     mongodb:
-      uri: ${MONGODB_URI}
+      uri: ${MONGODB_URI:mongodb://localhost:27017/journaldb}
       database: journaldb
       auto-index-creation: true
   mail:
@@ -37,7 +36,7 @@ spring:
           starttls:
             enable: true
   kafka:
-    bootstrap-servers: ${KAFKA_SERVERS}
+    bootstrap-servers: ${KAFKA_SERVERS:localhost:9092}
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
@@ -49,7 +48,7 @@ spring:
         spring:
           json:
             trusted:
-              packages: net.rickarya.journalApp.model
+              packages: io.rickarya.journalApp.model
     properties:
       security:
         protocol: SASL_SSL

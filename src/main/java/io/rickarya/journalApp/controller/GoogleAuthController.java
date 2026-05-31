@@ -1,6 +1,4 @@
 package io.rickarya.journalApp.controller;
-
-;
 import lombok.extern.slf4j.Slf4j;
 import io.rickarya.journalApp.entity.User;
 import io.rickarya.journalApp.repository.UserRepository;

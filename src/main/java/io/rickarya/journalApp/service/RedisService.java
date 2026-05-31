@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 public class RedisService {
 
     @Autowired
-    private RedisTemplate redisTemplate;
+    private RedisTemplate<String, String> redisTemplate;
 
     public <T> T get(String key, Class<T> entityClass) {
         try {
