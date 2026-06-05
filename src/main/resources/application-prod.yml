@@ -1,16 +1,68 @@
 # Production Profile Configuration
 # This configuration is activated when SPRING_PROFILES_ACTIVE=production
 
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /journal
+  compression:
+    enabled: true
+    min-response-size: 1024
+  tomcat:
+    threads:
+      max: 200
+      min-spare: 10
+    max-connections: 10000
+    max-http-post-size: 2097152  # 2MB
+
 spring:
-  jpa:
-    hibernate:
-      ddl-auto: validate  # Never use create or create-drop in production
-  
-  # Production-specific datasource settings
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+  main:
+    allow-circular-references: true
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:}
   data:
     mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/journaldb}
+      database: journaldb
       auto-index-creation: true
-      
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${JAVA_EMAIL}
+    password: ${JAVA_EMAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: weekly-sentiment-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: "*"
+            use:
+              type:
+                headers: false
+
   # Cache configuration
   cache:
     type: redis
@@ -18,11 +70,15 @@ spring:
       time-to-live: 3600000  # 1 hour
       use-key-prefix: true
 
+  jpa:
+    hibernate:
+      ddl-auto: validate  # Never use create or create-drop in production
+
 # Logging configuration
 logging:
   level:
     root: WARN
-    net.rickarya.journalApp: INFO
+    io.rickarya.journalApp: INFO
     org.springframework.web: WARN
     org.springframework.security: WARN
   file:
@@ -44,15 +100,3 @@ management:
     export:
       prometheus:
         enabled: true
-
-# Server configuration
-server:
-  compression:
-    enabled: true
-    min-response-size: 1024
-  tomcat:
-    threads:
-      max: 200
-      min-spare: 10
-    max-connections: 10000
-    max-http-post-size: 2097152  # 2MB
