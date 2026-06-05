@@ -1,4 +1,5 @@
 package io.rickarya.journalApp.controller;
+
 import lombok.extern.slf4j.Slf4j;
 import io.rickarya.journalApp.entity.User;
 import io.rickarya.journalApp.repository.UserRepository;
@@ -24,6 +25,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/auth/google")
 @Slf4j
+@SuppressWarnings("unchecked")
 public class GoogleAuthController {
 
     @Value("${spring.security.oauth2.client.registration.google.client-id}")
@@ -48,6 +50,7 @@ public class GoogleAuthController {
     private JwtUtil jwtUtil;
 
     @GetMapping("/callback")
+    @SuppressWarnings("unchecked")
     public ResponseEntity<?> handleGoogleCallback(@RequestParam String code) {
         try {
             String tokenEndpoint = "https://oauth2.googleapis.com/token";
@@ -101,6 +104,4 @@ client_id=YOUR_CLIENT_ID
     &prompt=consent
 
 */
-
-
 
