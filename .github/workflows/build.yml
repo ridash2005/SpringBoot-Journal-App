@@ -89,7 +89,7 @@ jobs:
       - name: Test Docker Image
         run: |
           docker load --input /tmp/image.tar
-          docker run --rm journalapp:${{ github.sha }} java -version
+          docker run --rm --entrypoint java journalapp:${{ github.sha }} -version
           echo "✓ Docker image built and verified successfully"
 
   deploy:
