@@ -1,12 +1,13 @@
 package io.rickarya.journalApp.controller;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.extern.slf4j.Slf4j;
 import io.rickarya.journalApp.dto.UserDTO;
 import io.rickarya.journalApp.entity.User;
 import io.rickarya.journalApp.service.UserDetailsServiceImpl;
 import io.rickarya.journalApp.service.UserService;
 import io.rickarya.journalApp.utils.JwtUtil;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,13 +39,18 @@ public class PublicController {
     }
 
     @PostMapping("/signup")
-    public void signup(@RequestBody UserDTO user) {
+    public ResponseEntity<?> signup(@RequestBody UserDTO user) {
         User newUser = new User();
         newUser.setEmail(user.getEmail());
         newUser.setUserName(user.getUserName());
         newUser.setPassword(user.getPassword());
         newUser.setSentimentAnalysis(user.isSentimentAnalysis());
-        userService.saveNewUser(newUser);
+        boolean isSaved = userService.saveNewUser(newUser);
+        if (isSaved) {
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>("Username already exists", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/login")
@@ -61,5 +67,3 @@ public class PublicController {
         }
     }
 }
-
-

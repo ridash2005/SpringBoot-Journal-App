@@ -34,11 +34,7 @@ public class UserService {
             userRepository.save(user);
             return true;
         } catch (Exception e) {
-            log.error("hahahhahhahahahah");
-            log.warn("hahahhahhahahahah");
-            log.info("hahahhahhahahahah");
-            log.debug("hahahhahhahahahah");
-            log.trace("hahahhahhahahahah");
+            log.error("Error occurred while saving new user: " + user.getUserName(), e);
             return false;
         }
     }

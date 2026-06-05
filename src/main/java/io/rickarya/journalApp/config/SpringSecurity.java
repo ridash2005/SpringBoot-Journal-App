@@ -29,7 +29,7 @@ public class SpringSecurity {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authz -> authz
-                .antMatchers("/journal/**", "/user/**").authenticated()
+                .antMatchers("/user/**").authenticated()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll());
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

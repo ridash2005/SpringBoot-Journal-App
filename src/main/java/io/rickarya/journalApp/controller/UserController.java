@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,14 +29,21 @@ public class UserController {
     @Autowired
     private WeatherService weatherService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @PutMapping
     public ResponseEntity<?> updateUser(@RequestBody User user) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
         User userInDb = userService.findByUserName(userName);
-        userInDb.setUserName(user.getUserName());
-        userInDb.setPassword(user.getPassword());
-        userService.saveNewUser(userInDb);
+        if (user.getUserName() != null && !user.getUserName().isEmpty()) {
+            userInDb.setUserName(user.getUserName());
+        }
+        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+            userInDb.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        userService.saveUser(userInDb);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
