@@ -280,6 +280,12 @@ Comprehensive guides for building, testing, and deploying the application:
   - Health check endpoints
   - Docker management commands
   - Troubleshooting common issues
+
+- **[PRODUCTION_DEPLOYMENT_FIX.md](PRODUCTION_DEPLOYMENT_FIX.md)** - Production deployment guide
+  - MongoDB connection issue resolution
+  - Production profile configuration
+  - Environment variable setup for Docker
+  - Monitoring and health checks
   
 - **[MONGODB_SESSION_ERROR_FIX.md](MONGODB_SESSION_ERROR_FIX.md)** - CI/CD error resolution
   - Explains the MongoDB session error fix
