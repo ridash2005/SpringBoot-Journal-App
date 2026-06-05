@@ -41,12 +41,13 @@ jobs:
         run: mvn --version
       
       - name: Build and Compile (No Tests)
-        run: mvn clean compile -DskipTests
+        run: mvn clean compile -DskipTests -Dspring.profiles.active=ci
         # Tests are skipped in CI because they require MongoDB, Redis, and Kafka services
+        # CI profile disables auto-index-creation to prevent MongoDB connection errors
         # To run tests locally: mvn test (requires docker-compose up)
       
       - name: Package Application
-        run: mvn package -DskipTests
+        run: mvn package -DskipTests -Dspring.profiles.active=ci
       
       - name: Verify JAR exists
         run: |
