@@ -41,7 +41,7 @@ EXPOSE 8080
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-    CMD wget --quiet --tries=1 --spider http://localhost:8080/journal/swagger-ui.html || exit 1
+    CMD wget --quiet --tries=1 --spider http://localhost:8080/journal/health/status || exit 1
 
 # Run the application
 ENTRYPOINT ["java", "-Dspring.profiles.active=production", "-jar", "app.jar"]
