@@ -8,6 +8,14 @@
 
 ## Local Build & Testing
 
+### Important: Tests Require Local Services
+Tests require MongoDB, Redis, and Kafka to be running. 
+
+**Start services first:**
+```bash
+docker-compose up -d
+```
+
 ### Option 1: Using Shell Script (Linux/Mac)
 ```bash
 chmod +x scripts/build-test.sh
@@ -21,18 +29,27 @@ scripts\build-test.bat
 
 ### Option 3: Manual Maven Commands
 ```bash
-# Clean build
+# Start services in background (if not already running)
+docker-compose up -d
+
+# Clean build with tests
 mvn clean compile
 
 # Run tests
 mvn test
 
 # Package application
-mvn package -DskipTests
+mvn package
 
 # Verify JAR
 ls -lh target/journalApp-1.0.0.jar
 ```
+
+### CI/CD Build (GitHub Actions)
+The GitHub Actions workflow skips tests because external services (MongoDB, Redis, Kafka) are not available in the CI environment.
+
+Tests run: **Locally only (with docker-compose)**  
+Build runs: **Both locally and in CI/CD**
 
 ## Docker Build & Run
 

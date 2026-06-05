@@ -10,6 +10,16 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * Controller tests for Journal Entry endpoints.
+ * 
+ * NOTE: This test requires MongoDB, Redis, and Kafka to be running locally.
+ * Run: docker-compose up
+ * 
+ * Or run: mvn test (with docker-compose already running)
+ * 
+ * Tests are SKIPPED in GitHub Actions CI/CD because external services are not available.
+ */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 @TestPropertySource(properties = {
