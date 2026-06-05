@@ -264,6 +264,51 @@ Run tests with verbose output:
 mvn test -X
 ```
 
+## Documentation
+
+Comprehensive guides for building, testing, and deploying the application:
+
+- **[BUILD_AND_DEPLOY.md](BUILD_AND_DEPLOY.md)** - Complete build and deployment guide
+  - Local build and testing procedures
+  - Docker build and run instructions
+  - GitHub Actions CI/CD pipeline
+  - Environment variable setup
+  
+- **[TESTING_WITH_SERVICES.md](TESTING_WITH_SERVICES.md)** - Service integration testing guide ⭐ **START HERE**
+  - How to verify MongoDB, Redis, and Kafka are working
+  - Step-by-step service verification
+  - Health check endpoints
+  - Docker management commands
+  - Troubleshooting common issues
+  
+- **[MONGODB_SESSION_ERROR_FIX.md](MONGODB_SESSION_ERROR_FIX.md)** - CI/CD error resolution
+  - Explains the MongoDB session error fix
+  - CI profile configuration
+  
+- **[DEPLOYMENT.md](DEPLOYMENT.md)** - Production deployment guide
+- **[GITHUB_ACTIONS_FIX.md](GITHUB_ACTIONS_FIX.md)** - CI/CD pipeline fixes
+- **[CHANGELOG.md](CHANGELOG.md)** - Version history and changes
+
+### Quick Start with Services
+```bash
+# 1. Start all services (MongoDB, Redis, Kafka)
+docker-compose up -d
+
+# 2. Build the application
+mvn clean package -DskipTests
+
+# 3. Run locally
+mvn spring-boot:run
+
+# 4. Verify everything is working
+curl http://localhost:8080/journal/actuator/health
+
+# 5. Run integration tests
+mvn test
+```
+
+For detailed verification steps, see **[TESTING_WITH_SERVICES.md](TESTING_WITH_SERVICES.md)**.
+
 ## Performance & Monitoring
 
 - **Request Logging**: All requests are logged in `logs/` directory

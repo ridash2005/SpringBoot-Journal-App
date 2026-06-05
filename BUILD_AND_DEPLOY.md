@@ -51,6 +51,169 @@ The GitHub Actions workflow skips tests because external services (MongoDB, Redi
 Tests run: **Locally only (with docker-compose)**  
 Build runs: **Both locally and in CI/CD**
 
+## Verify Services Integration
+
+This section covers how to verify that the application works correctly with MongoDB, Redis, and Kafka services.
+
+### 1. Start All Services
+```bash
+# Start MongoDB, Redis, Kafka, and Zookeeper
+docker-compose up -d
+
+# Verify services are running
+docker-compose ps
+```
+
+All services should show as **healthy** (especially MongoDB and Redis which have health checks).
+
+### 2. Build the Application
+```bash
+# Clean build (skips tests initially)
+mvn clean package -DskipTests
+
+# Or build with the default profile (not CI)
+mvn clean package -DskipTests -Dspring.profiles.active=default
+```
+
+### 3. Run the Application Locally
+
+**Option A: Run with Maven (fastest for testing)**
+```bash
+mvn spring-boot:run
+```
+
+**Option B: Run the JAR directly**
+```bash
+java -jar target/journalApp-1.0.0.jar
+```
+
+**Expected output** (should see):
+```
+[main] o.s.b.w.embedded.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8080 (http)
+[main] o.rickarya.journalApp.JournalApplication : Started JournalApplication
+```
+
+### 4. Verify Services Are Connected
+
+#### Check Health Endpoints
+```bash
+# Health check (includes MongoDB, Redis, Kafka status)
+curl http://localhost:8080/journal/actuator/health
+
+# Should return something like:
+# {
+#   "status": "UP",
+#   "components": {
+#     "mongodb": {"status": "UP"},
+#     "redis": {"status": "UP"},
+#     "kafka": {"status": "UP"}
+#   }
+# }
+```
+
+#### Test MongoDB
+```bash
+# Create a test user via API
+curl -X POST http://localhost:8080/journal/api/users \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "testuser",
+    "email": "test@example.com",
+    "password": "Test@123"
+  }'
+
+# Check if user was saved
+mongo mongodb://localhost:27017/journaldb
+# In MongoDB shell:
+db.user.find()
+```
+
+#### Test Redis Cache
+```bash
+# Connect to Redis
+redis-cli
+
+# Check if keys are stored
+KEYS *
+GET user:testuser
+
+# Ping Redis
+PING
+# Response: PONG
+```
+
+#### Test Kafka
+```bash
+# Check Kafka topics
+docker exec journal-kafka kafka-topics --bootstrap-server localhost:9092 --list
+
+# You should see topics like: weekly-sentiment-group, etc.
+```
+
+### 5. Run Integration Tests
+```bash
+# Run all tests (requires all services running)
+mvn test
+
+# Run specific test class
+mvn test -Dtest=JournalApplicationTests
+
+# Run with detailed output
+mvn test -X
+```
+
+### 6. Useful Docker Commands
+
+```bash
+# View logs for a specific service
+docker-compose logs mongo
+docker-compose logs redis
+docker-compose logs kafka
+docker-compose logs app
+
+# Follow logs in real-time
+docker-compose logs -f app
+
+# Stop all services
+docker-compose down
+
+# Stop and remove volumes (fresh restart)
+docker-compose down -v
+
+# Restart services
+docker-compose restart
+```
+
+### 7. Quick Verification Checklist
+
+| Service | Command | Expected Result |
+|---------|---------|-----------------|
+| **MongoDB** | `curl localhost:27017` | Connection refused (expected) |
+| **Redis** | `redis-cli ping` | `PONG` |
+| **Kafka** | `docker ps \| grep kafka` | Container running |
+| **App** | `curl http://localhost:8080/journal/actuator/health` | `{"status":"UP"}` |
+
+### 8. Troubleshooting
+
+```bash
+# If services won't start, check Docker daemon
+docker ps
+
+# If app crashes, check logs
+docker-compose logs app
+
+# If MongoDB won't connect, verify URI
+# Should be: mongodb://localhost:27017/journaldb
+
+# If Redis password issues, check docker-compose.dev.yml
+# Default dev password is: (empty/no password)
+
+# If tests timeout, increase timeout in pom.xml
+# Current: 30000ms, try 60000ms
+```
+
+**Quick Start**: `docker-compose up -d && mvn spring-boot:run` and check `http://localhost:8080/journal/actuator/health` ✅
+
 ## Docker Build & Run
 
 ### Build Docker Image
