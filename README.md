@@ -281,18 +281,7 @@ Comprehensive guides for building, testing, and deploying the application:
   - Docker management commands
   - Troubleshooting common issues
 
-- **[PRODUCTION_DEPLOYMENT_FIX.md](PRODUCTION_DEPLOYMENT_FIX.md)** - Production deployment guide
-  - MongoDB connection issue resolution
-  - Production profile configuration
-  - Environment variable setup for Docker
-  - Monitoring and health checks
-  
-- **[MONGODB_SESSION_ERROR_FIX.md](MONGODB_SESSION_ERROR_FIX.md)** - CI/CD error resolution
-  - Explains the MongoDB session error fix
-  - CI profile configuration
-  
 - **[DEPLOYMENT.md](DEPLOYMENT.md)** - Production deployment guide
-- **[GITHUB_ACTIONS_FIX.md](GITHUB_ACTIONS_FIX.md)** - CI/CD pipeline fixes
 - **[CHANGELOG.md](CHANGELOG.md)** - Version history and changes
 
 ### Quick Start with Services
